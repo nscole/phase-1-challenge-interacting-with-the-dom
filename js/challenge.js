@@ -10,12 +10,14 @@ const likesMessage = document.createElement("li");
 let likeCount = 0;
 const comments = document.getElementById("list");
 
+
 plus.addEventListener("click", addOne)
 
 function addOne () {
     counter.innerHTML ++
     return counter
 }
+
 
 minus.addEventListener("click", minusOne)
 
@@ -26,42 +28,49 @@ function minusOne () {
     }
 }
 
+
 heart.addEventListener("click", addHeart);
 
-function addHeart () {
-    const current = counter.innerHTML;
+function addHeart() {
+    const current = counter.innerHTML
     const alreadyLiked = document.getElementById(`${current}_likes`)
-
+    // if li already exists, need to add 1 to current number
     if (alreadyLiked) {
-        const alreadyLikedText = alreadyLiked.textContent.split("");
-        const likesNumber = parseInt(alreadyLiked[4])
+        // need to isolate likesNum from alreadyLiked text
+        const alreadyLikedText = alreadyLiked.textContent.split(' ')
+        // console.log(alreadyLikedText)
+        const likesNum = parseInt(alreadyLikedText[4])
+        // console.log(likesNum)
         alreadyLiked.textContent = `${current} has been liked ${likesNum + 1} times`
-    } else {
-        const likesMessage = document.createElement("li");
-        likesMessage.id = `${current}_likes`;
-        likesMessage.textContent = `${current} has been liked 1 time`;
-        likesDisplay.append(likesMessage);
     }
+    else {
+        const likesMessage = document.createElement('li')
+        likesMessage.id = `${current}_likes`
+        likesMessage.textContent = `${current} has been liked 1 time"`
+        likesDisplay.append(likesMessage)
+    }
+    
 }
 
 pause.addEventListener("click", pauseCounter);
 
-function pauseCounter () {
-    const button = [plus, minus, like, submit]
+function pauseCounter() {
+    const buttons = [plus, minus, like, submit]
     if (pause.innerText === "pause") {
-        pause.innerText = "resume";
-        for (const button of button) {
+        pause.innerText = "resume"
+        for (const button of buttons) {
             button.disabled = true;
         }
-    }
-    else if (pause.textContent === "resume"){
-            pause.textContent = "pause";
-            for (const button of button){
-                button.disabled = false;
-            }
+    } 
+    else if (pause.textContent === "resume") {
+        pause.textContent = "pause"
+        for (const button of buttons) {
+            button.disabled = false;
+        }
     }
     return pause
 }
+
 
 form.addEventListener("submit", showComment);
 
@@ -73,4 +82,13 @@ function showComment(event) {
     p.textContent = commentUser;
     comments.appendChild(p);
     event.target.reset();
+}
+
+let oneSecond = setInterval(addCounter, 1000);
+
+function addCounter () {
+    if(pause.innerText === "pause") {
+        counter.innerHTML ++;
+    }
+    return counter;
 }
